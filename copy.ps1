@@ -1,4 +1,4 @@
-﻿#Validacion de parametros de parametros. 
+#Validacion de parametros de parametros. 
 param(
     [Parameter(mandatory=$true)]
     [string]$fich
@@ -10,7 +10,9 @@ function getFiles($fich){
     $success  = 0    
     $fail = 0
     #Creación de archivo de log.
-    New-Item -Path ".\log.txt" -ItemType "file"
+	if ((Test-Path ".\log.txt") -eq $false) {
+		New-Item -Path ".\log.txt" -ItemType "file"
+	}
     foreach ($line in (Get-Content $fich)){
         Copy-Item -Path $line -Destination ".\output" -Verbose
         #validación de ejecución correcta del comando de copia
@@ -19,11 +21,13 @@ function getFiles($fich){
         } else {            
             Add-Content .\log.txt "`n$line"
             $fail++
-        }
-               
+        }       
+        
     }
-    Write-Host "Copiados $success archivos correctamente"
-    Write-Host "$fail archivos falllidos. Revisar log.txt"
+	Write-Host "Copiados $success archivos correctamente"
+	if ($fail -gt 0) {
+		Write-Host "$fail archivos falllidos. Revisar log.txt"
+	}
 }
 
 #Validaciones.
@@ -36,4 +40,4 @@ if ((Test-Path $fich) -eq $true){
    }
 } else {
     Write-Host "Falta archivo o el archivo no es valido."
-}   
+}  
