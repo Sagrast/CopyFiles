@@ -20,10 +20,10 @@ function getFiles($fich){
             Add-Content .\log.txt "`n$line"
             $fail++
         }
-        Write-Host "Copiados $success archivos correctamente"
-        Write-Host "$fail archivos falllidos. Revisar log.txt"
-        
+               
     }
+    Write-Host "Copiados $success archivos correctamente"
+    Write-Host "$fail archivos falllidos. Revisar log.txt"
 }
 
 #Validaciones.
